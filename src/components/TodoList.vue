@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import type { Ref } from 'vue'
 import ListItem from './ListItem.vue'
 
@@ -37,13 +37,19 @@ const updateItem = (item: Item): void => {
     toggleItemChecked(updatedItem)
   }
 }
+
+const sortedList = computed(() =>
+  [...listItems.value].sort(
+    (a, b) => (a.checked ? 1 : 0) - (b.checked ? 1 : 0)
+  )
+)
 </script>
 
 <template>
   <ul>
     <li
       :key="key"
-      v-for="(item, key) in listItems"
+      v-for="(item, key) in sortedList"
     >
       <ListItem
         :is-checked="item.checked"
